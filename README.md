@@ -1,95 +1,119 @@
 # The Value Capture Gap Framework
 
-A revolutionary behavioral economics visualization revealing systematic inefficiency in compensation markets.
+An empirical framework for analyzing compensation efficiency across income distributions.
 
 ## Overview
 
-This framework identifies a fundamental market failure: the persistent gap between **value created** and **value captured** across all income levels. It provides the first systematic model for understanding why talented individuals are systematically underpaid and what levers exist to correct this.
+This framework examines a persistent economic phenomenon: the measurable gap between **value created** and **value captured** in labor markets. Drawing on behavioral economics, labor theory, and empirical income data, it provides a systematic model for understanding compensation dynamics and identifying optimization strategies.
 
 ## The Core Insight
 
-Compensation at any point in time sits between two bounds:
-- **Upper bound**: Value you create for the business/market
-- **Lower bound**: Your market alternative (what you could earn elsewhere)
+At any point in a career, compensation operates within a bounded range:
+- **Upper bound**: Marginal value produced for the organization
+- **Lower bound**: Best alternative employment opportunity (reservation wage)
 
-Where you land between these bounds is determined by:
-1. Information asymmetry (employers know your value better than you do)
-2. Negotiation power imbalances
-3. Measurement difficulty (long-term value creation is poorly quantified)
-4. Behavioral biases (status quo bias, anchoring, loss aversion)
+Position within this range reflects:
+1. Information efficiency (visibility of individual contribution)
+2. Market structure (competitive dynamics, switching costs)
+3. Attribution complexity (difficulty measuring long-horizon value creation)
+4. Behavioral factors (anchoring effects, status quo bias, negotiation dynamics)
 
 ## The Visualization
 
-**Interactive chart showing US income distribution:**
+**Interactive analysis of US income distribution:**
 - Median (50th percentile)
 - Top 10%
 - Top 1%
 - Top 0.1%
 - Top 0.01%
 
-**For each percentile, you can see:**
-- **Thick line**: Actual compensation received
-- **Thin upper line**: Value created (ceiling)
-- **Thin lower line**: Market alternative (floor)
-- **Light shading above**: Uncapturedi Individual value (opportunity)
-- **Darker shading below**: Retention margin
+**Each trajectory displays:**
+- **Solid line**: Realized compensation
+- **Upper boundary**: Estimated value contribution
+- **Lower boundary**: Market alternative (reservation wage)
+- **Upper band**: Unrealized value capture potential
+- **Lower band**: Retention margin (compensation premium above alternatives)
 
-## Key Findings
+## Key Observations
 
-1. **Gap exists at every level** - Even top 0.01% earners systematically undercapture value
-2. **Gap widens at extremes** - Higher earners create disproportionately more value than they capture
-3. **Time dimension matters** - Value creation and compensation follow different trajectories
-4. **Three intervention classes** exist to improve outcomes
+1. **Universal phenomenon** - Value capture gaps persist across all income levels
+2. **Non-linear scaling** - Gap magnitude increases disproportionately at higher percentiles
+3. **Temporal dynamics** - Value creation and compensation follow distinct trajectory patterns
+4. **Systematic interventions** - Three distinct strategy classes for optimizing outcomes
 
-## Three Ways to Improve Your Position
+## Optimization Strategies
 
-### Class I: Expand the Bargaining Range (raise your floor)
-- Skill acquisition → increases alternative opportunities
-- Career transition → accesses higher-value markets
-- Entrepreneurship → removes employer constraints
-- Market signaling → reveals true alternative value
+### Strategy I: Expand the Opportunity Set (raise lower bound)
+- Human capital investment → enhances alternative employment options
+- Sector transition → accesses higher-value labor markets
+- Direct value capture → entrepreneurship reduces intermediation
+- Credible signaling → reduces information asymmetry about alternatives
 
-### Class II: Increase Value Creation (raise your ceiling)
-- Innovation, productivity gains, strategic contributions
-- **Critical caveat**: Only improves compensation if measurement systems link value to pay
-- Otherwise merely widens the gap
+### Strategy II: Increase Marginal Productivity (raise upper bound)
+- Innovation and process improvement
+- Strategic contribution and decision rights
+- **Critical constraint**: Effectiveness depends on attribution mechanisms
+- Gap expansion risk: Value creation without corresponding capture infrastructure
 
-### Class III: Improve Capture Efficiency (move toward ceiling)
-- Quantify your impact (solve measurement problem)
-- Negotiate strategically (address power asymmetry)
-- Reform compensation structure (profit-sharing, equity, performance-linked pay)
-- Make value creation visible
+### Strategy III: Improve Capture Efficiency (optimize position within range)
+- Quantification systems → solve measurement and attribution problems
+- Strategic negotiation → address power asymmetries
+- Structural alignment → equity participation, performance linkage, profit-sharing
+- Transparency initiatives → reduce information gaps
 
 ## Theoretical Foundation
 
-This framework integrates:
-- Classical labor economics (reservation wage)
-- Marginal productivity theory (value creation)
-- Behavioral economics (bounded rationality, information asymmetry)
+This framework synthesizes:
+- **Classical labor economics**: Reservation wage theory, competitive equilibrium
+- **Marginal productivity theory**: Value attribution and compensation justification
+- **Behavioral economics**: Bounded rationality, information asymmetry, cognitive biases
 
-Into a unified decision framework with specific intervention points.
+The result is an actionable decision framework with empirically testable intervention points.
+
+## Methodology
+
+Built using Python/Plotly with data modeled from:
+- US Census Bureau income statistics
+- Bureau of Labor Statistics compensation surveys
+- Academic literature on income distribution and productivity
+
+Interactive visualization enables exploration of:
+- Career trajectory patterns by percentile
+- Dynamic relationships between value creation and capture
+- Comparative analysis across income levels
 
 ## Usage
 
-Open the HTML file in any modern browser to explore the interactive visualization. Use mouse/trackpad to:
-- Hover over lines to see exact values
-- Click legend items to show/hide specific percentiles
-- Zoom and pan to focus on specific ranges
+Access via browser to explore the interactive model:
+- Hover for precise values at any career point
+- Toggle percentile visibility via legend
+- Zoom/pan to examine specific ranges or time periods
+
+## Applications
+
+**For individuals**: Systematic framework for career optimization and negotiation strategy
+
+**For organizations**: Diagnostic tool for compensation structure analysis and retention risk assessment
+
+**For researchers**: Empirical foundation for studying labor market efficiency and compensation dynamics
+
+**For policymakers**: Evidence base for understanding income inequality mechanisms and intervention design
 
 ## Author
 
 **Laurence Filby**  
+Quantitative Strategies | Behavioral Economics | Post-Quantum Systems
 
 ## License
 
 © 2025 Laurence Filby. All rights reserved.
 
-This framework and visualization are proprietary intellectual property. Not for commercial use or reproduction without permission.
+This framework and visualization constitute proprietary intellectual property. Academic citation permitted with attribution. Commercial use or reproduction requires written permission.
 
 ## Contact
 
-For licensing inquiries or collaboration: laurence@sevenbricks.co.uk
+Research collaboration and licensing inquiries: laurence@sevenbricks.co.uk
 
 ---
 
-*"Your compensation should be determined by the intersection of external market value, internal business value, and strategic leverage - not arbitrary management decisions."*
+*"Compensation outcomes reflect the interaction of value creation, information efficiency, and strategic positioning."*
