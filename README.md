@@ -31,8 +31,8 @@ Where you land between these bounds is determined by:
 - **Thick line**: Actual compensation received
 - **Thin upper line**: Value created (ceiling)
 - **Thin lower line**: Market alternative (floor)
-- **Light shading above**: Uncaptured value (opportunity)
-- **Darker shading below**: Employer pressure zone
+- **Light shading above**: Uncapturedi Individual value (opportunity)
+- **Darker shading below**: Retention margin
 
 ## Key Findings
 
