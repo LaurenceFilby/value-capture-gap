@@ -1,0 +1,425 @@
+<title>The Value Capture Gap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Laurence Filby's framework for the gap between the value people create and the pay they capture, anchored in US data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column (~68ch) with charts breaking out to a wider measure; the band model is the centrepiece instrument. */
+:root{
+  --bg:#f4f5f2; --surface:#fcfcfb; --fg:#17201e; --muted:#5a6663; --faint:#8a9592; --line:#d9ddd9; --grid:#e6e9e6;
+  --value:#b06f12; --pay:#2a6fa3; --alt:#a2457f; --gapfill:rgba(176,111,18,.16); --floorfill:rgba(42,111,163,.10);
+  --ink-inv:#fcfcfb;
+  --f-display:"Young Serif", Georgia, "Times New Roman", serif;
+  --f-body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1417; --surface:#141b1f; --fg:#e6ebe8; --muted:#9aa7a3; --faint:#6e7b77; --line:#26313a; --grid:#1c252b;
+  --value:#c88a33; --pay:#4f9bd0; --alt:#c06aa6; --gapfill:rgba(200,138,51,.18); --floorfill:rgba(79,155,208,.12); --ink-inv:#0e1417; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1417; --surface:#141b1f; --fg:#e6ebe8; --muted:#9aa7a3; --faint:#6e7b77; --line:#26313a; --grid:#1c252b;
+  --value:#c88a33; --pay:#4f9bd0; --alt:#c06aa6; --gapfill:rgba(200,138,51,.18); --floorfill:rgba(79,155,208,.12); --ink-inv:#0e1417; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1040px;margin:0 auto;padding-block:56px 80px;display:flex;flex-direction:column;gap:88px}
+.col{max-width:68ch}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;line-height:1.12}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.7rem,3.6vw,2.4rem)}
+h3{font-size:1.25rem}
+p{margin:0}
+.stack{display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-family:var(--f-data);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:1.22rem;color:var(--muted);max-width:60ch}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.v{color:var(--value)} .p{color:var(--pay)} .a{color:var(--alt)}
+.key{display:inline-block;width:18px;height:0;border-top:2px solid currentColor;vertical-align:middle;margin-right:6px}
+.key.dash{border-top-style:dashed}
+a{color:inherit;text-decoration-color:var(--faint);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--fg)}
+:focus-visible{outline:2px solid var(--pay);outline-offset:2px}
+
+/* hero */
+.hero{display:grid;gap:28px}
+.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.fig{background:var(--bg);padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.fig .n{font-family:var(--f-display);font-size:2.3rem;line-height:1}
+.fig .l{font-size:.88rem;color:var(--muted)}
+
+/* chart frames */
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:var(--f-data);font-size:11px;fill:var(--muted)}
+.chart .lbl{font-size:12px;fill:var(--fg)}
+.gridl{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--line);stroke-width:1}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);padding:10px 12px;font-size:.82rem;
+  line-height:1.45;min-width:170px;box-shadow:0 6px 24px rgba(0,0,0,.12);opacity:0;transition:opacity .12s;z-index:5}
+.tip b{font-family:var(--f-data);font-weight:500}
+.tip .row{display:flex;justify-content:space-between;gap:16px}
+.caption{font-size:.84rem;color:var(--faint);max-width:80ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:.88rem;color:var(--muted)}
+
+/* instrument */
+.instrument{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,3vw,32px);display:grid;gap:22px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:end}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--line)}
+.seg button{font:500 .86rem var(--f-body);background:transparent;color:var(--muted);border:0;border-right:1px solid var(--line);padding:8px 14px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--ink-inv)}
+.seg button:hover:not([aria-pressed="true"]){color:var(--fg)}
+label.ctl{display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--muted)}
+input[type=range]{width:min(260px,70vw);accent-color:var(--pay)}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.readout div{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.readout .k{font-size:.76rem;color:var(--muted)}
+.readout .n{font-family:var(--f-data);font-size:1.15rem;font-variant-numeric:tabular-nums}
+
+/* strategies */
+.strats{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.strat{all:unset;cursor:pointer;border:1px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:8px;background:var(--bg);transition:border-color .15s}
+.strat:hover{border-color:var(--faint)}
+.strat[aria-pressed="true"]{border-color:var(--fg);background:var(--surface)}
+.strat:focus-visible{outline:2px solid var(--pay);outline-offset:2px}
+.strat .tag{font-family:var(--f-data);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.strat p{font-size:.92rem;color:var(--muted)}
+.strat ul{margin:0;padding-left:18px;font-size:.88rem;color:var(--muted)}
+
+/* evidence */
+.evidence{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:40px 48px}
+.ev{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ev .big{font-family:var(--f-display);font-size:2.6rem;line-height:1}
+.ev p{font-size:.95rem;color:var(--muted)}
+.waffle{display:grid;grid-template-columns:repeat(25,1fr);gap:3px;max-width:340px}
+.waffle i{aspect-ratio:1;background:var(--grid);display:block}
+.waffle i.on{background:var(--value)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:120px 1fr 56px;gap:10px;align-items:center;font-size:.86rem}
+.bar .track{height:10px;background:var(--grid);position:relative}
+.bar .fill{position:absolute;inset:0 auto 0 0;border-radius:0 4px 4px 0}
+.bar .val{font-family:var(--f-data);text-align:right;font-variant-numeric:tabular-nums}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:720px){.calc{grid-template-columns:1fr}}
+.calc form{display:flex;flex-direction:column;gap:14px}
+.calc input[type=number]{font:500 1rem var(--f-data);background:var(--bg);color:var(--fg);border:1px solid var(--line);padding:9px 10px;width:100%}
+.meter{position:relative;height:46px;margin-top:8px}
+.meter .rail{position:absolute;left:0;right:0;top:20px;height:6px;background:linear-gradient(90deg,var(--floorfill),var(--gapfill))}
+.meter .mk{position:absolute;top:8px;width:2px;height:30px;transform:translateX(-1px)}
+.meter .mk span{position:absolute;top:32px;left:50%;transform:translateX(-50%);font-family:var(--f-data);font-size:.72rem;white-space:nowrap;color:var(--muted)}
+.verdict{font-size:1.05rem}
+.note{font-size:.8rem;color:var(--faint)}
+
+.sources ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-top:24px;font-size:.86rem;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">A framework by Laurence Filby · v2 · October 2026</div>
+  <h1>The Value Capture Gap</h1>
+  <p class="lede">Every pay packet sits inside a band. The ceiling is the value you create. The floor is your best alternative. Where you land between them is a negotiation, and most people land far below the ceiling.</p>
+  <div class="chart" id="pp"></div>
+  <div class="legend">
+    <span><i class="key v"></i>Net productivity (output per hour)</span>
+    <span><i class="key p"></i>Typical worker hourly pay</span>
+    <span style="color:var(--faint)">Index, 1948 = 100. Shaded area: the gap.</span>
+  </div>
+  <div class="figures">
+    <div class="fig"><span class="n num v">+93.7%</span><span class="l">US net productivity growth, 1979 to Q2 2026</span></div>
+    <div class="fig"><span class="n num p">+32.7%</span><span class="l">Typical worker's hourly pay over the same period</span></div>
+    <div class="fig"><span class="n num">52.8%</span><span class="l">Labour's share of business output, Q2 2026: a record low</span></div>
+  </div>
+</header>
+
+<section class="stack">
+  <div class="eyebrow">The idea</div>
+  <h2 class="col">Pay is bounded on both sides</h2>
+  <div class="col stack">
+    <p>At any point in a career, compensation sits between two numbers. The <span class="v">upper bound</span> is the marginal value you produce for the organisation. The <span class="a">lower bound</span> is your reservation wage, the best offer you could walk to tomorrow. An employer will never pay more than the first for long, and you will never accept less than the second for long.</p>
+    <p>The space between is shared. Above your pay sits <span class="v">uncaptured value</span>: what you create that the firm keeps. Below it sits your <span class="p">retention margin</span>: the premium that stops you leaving. Where pay settles depends on how visible your contribution is, how easy you are to replace, how hard your value is to attribute, and how well you negotiate.</p>
+  </div>
+</section>
+
+<section class="stack" id="model">
+  <div class="eyebrow">The instrument</div>
+  <h2 class="col">See the band across a career</h2>
+  <p class="col" style="color:var(--muted)">Pick an earnings tier and a strategy. Each tier is anchored to where that percentile actually sits in US wage data, then projected across a 40-year career. Hover the chart to read any year.</p>
+
+  <div class="instrument">
+    <div class="controls">
+      <div class="stack" style="gap:6px">
+        <span class="eyebrow" id="tierlbl">Earnings tier</span>
+        <div class="seg" id="tiers" role="group" aria-labelledby="tierlbl"></div>
+      </div>
+      <label class="ctl" for="capture">Capture efficiency adjustment
+        <input type="range" id="capture" min="-30" max="60" step="1" value="0">
+      </label>
+    </div>
+
+    <div class="chart" id="band"></div>
+    <div class="legend">
+      <span class="v"><i class="key"></i>Value created (ceiling)</span>
+      <span class="p"><i class="key" style="border-top-width:3px"></i>Actual pay</span>
+      <span class="a"><i class="key dash"></i>Market alternative (floor)</span>
+    </div>
+
+    <div class="readout" id="readout"></div>
+
+    <div class="stack" style="gap:10px">
+      <span class="eyebrow">Three ways to move the band · tap to apply</span>
+      <div class="strats" id="strats">
+        <button class="strat" data-s="floor" aria-pressed="false">
+          <span class="tag">Strategy I · raise the floor</span><h3>Expand the opportunity set</h3>
+          <p>Make your best alternative better, and the minimum anyone can pay you rises with it.</p>
+          <ul><li>Skills and credentials the market prices</li><li>Move to a higher-value sector</li><li>Visible, credible outside options</li></ul>
+        </button>
+        <button class="strat" data-s="ceiling" aria-pressed="false">
+          <span class="tag">Strategy II · raise the ceiling</span><h3>Create more value</h3>
+          <p>Produce more, and the ceiling lifts. Watch the gap: without attribution, the firm keeps the extra.</p>
+          <ul><li>Innovation and process gains</li><li>Decision rights and scope</li><li>Risk: value created, not captured</li></ul>
+        </button>
+        <button class="strat" data-s="capture" aria-pressed="false">
+          <span class="tag">Strategy III · move within the band</span><h3>Capture more of it</h3>
+          <p>Close the distance between what you make and what you keep.</p>
+          <ul><li>Quantify and attribute your output</li><li>Negotiate from data</li><li>Equity, profit share, performance links</li></ul>
+        </button>
+      </div>
+    </div>
+    <p class="note">Illustrative model. Tier pay levels come from SSA 2022 wage percentiles; the ceiling and floor use the mid-career ratios from the original Value Capture Gap model. They are framework assumptions, not measurements.</p>
+  </div>
+</section>
+
+<section class="stack">
+  <div class="eyebrow">The evidence</div>
+  <h2 class="col">The gap shows up everywhere you look</h2>
+  <div class="evidence">
+    <div class="ev">
+      <h3>Labour's slice keeps shrinking</h3>
+      <div class="chart" id="ls"></div>
+      <p>Workers' share of nonfarm business output was 65.5% in 1947 and hit 52.8% in Q2 2026, the lowest since records began. At the economy level, the band is drifting toward capital.</p>
+    </div>
+    <div class="ev">
+      <h3>Innovators keep about 2 cents in the dollar</h3>
+      <div class="waffle" id="waffle" aria-label="2.2 of 100 squares filled"></div>
+      <p>William Nordhaus estimated that innovators captured only about <span class="v num">2.2%</span> of the total value their innovations created across the postwar US economy. The rest went to consumers and the wider economy. Strategy II in its purest form.</p>
+    </div>
+    <div class="ev">
+      <h3>The floor moves when you do</h3>
+      <div class="bars" id="switch"></div>
+      <p>Median annual wage growth, Atlanta Fed tracker. Job switchers out-earned stayers by 1.3 points in September 2026, and switching paid 8.4% at the 2022 peak. Testing your alternative is how the floor gets priced.</p>
+    </div>
+    <div class="ev">
+      <h3>Pay concentrates at the top</h3>
+      <div class="bars" id="conc"></div>
+      <p>US W-2 wages, 2022. The 0.13% of workers earning over $1M took 5.3% of all wages. The 227 people above $50M averaged about $100M each. The gap widens as the band rises, but so does capture.</p>
+    </div>
+  </div>
+</section>
+
+<section class="stack" id="you">
+  <div class="eyebrow">Your band</div>
+  <h2 class="col">Where do you sit?</h2>
+  <div class="instrument calc">
+    <form id="calcf" autocomplete="off">
+      <label class="ctl" for="cPay">Current total compensation ($)<input type="number" id="cPay" value="180000" min="0" step="1000"></label>
+      <label class="ctl" for="cAlt">Best realistic alternative offer ($)<input type="number" id="cAlt" value="150000" min="0" step="1000"></label>
+      <label class="ctl" for="cVal">Value you create for the firm each year ($)<input type="number" id="cVal" value="420000" min="0" step="1000"></label>
+      <p class="note">Example figures. Replace them with your own; nothing leaves this page.</p>
+    </form>
+    <div class="stack">
+      <div class="meter" id="meter" aria-hidden="true">
+        <div class="rail"></div>
+        <div class="mk" id="mA" style="background:var(--alt)"><span>floor</span></div>
+        <div class="mk" id="mP" style="background:var(--pay);width:3px"><span>you</span></div>
+        <div class="mk" id="mV" style="background:var(--value)"><span>ceiling</span></div>
+      </div>
+      <div class="readout" id="calcout"></div>
+      <p class="verdict" id="verdict"></p>
+    </div>
+  </div>
+</section>
+
+<section class="stack sources">
+  <div class="eyebrow">Method and sources</div>
+  <div class="col stack" style="gap:12px">
+    <p style="color:var(--muted);font-size:.95rem">Real data appears in the productivity chart, the labour share chart and all four evidence panels. The career band is a model: it shows how the framework works, using real percentile levels as anchors.</p>
+    <ol>
+      <li><a href="https://www.epi.org/productivity-pay-gap/" target="_blank" rel="noopener">Economic Policy Institute, The Productivity–Pay Gap</a> (net productivity and production/nonsupervisory hourly compensation, 1948–2026Q2; Q4 values shown)</li>
+      <li><a href="https://www.bls.gov/opub/ted/2026/labor-share-at-its-lowest-level-52-8-percent-in-second-quarter-2026.htm" target="_blank" rel="noopener">BLS, Labor share at its lowest level, 52.8% in Q2 2026</a></li>
+      <li><a href="https://www.nber.org/digest/oct04/who-gains-innovation" target="_blank" rel="noopener">NBER Digest, Who Gains from Innovation? (Nordhaus)</a></li>
+      <li><a href="https://www.atlantafed.org/research-and-data/data/wage-growth-tracker" target="_blank" rel="noopener">Federal Reserve Bank of Atlanta, Wage Growth Tracker</a> (3-month moving average, September 2026; 2022 peak via YCharts)</li>
+      <li><a href="https://ssa.gov/cgi-bin/netcomp.cgi?year=2022" target="_blank" rel="noopener">Social Security Administration, Wage Statistics for 2022</a> (net compensation distribution, 172M wage earners)</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Laurence Filby. Framework and visualisation. Citation permitted with attribution.</span>
+  <span>Contact: <span style="user-select:all">laurence@sevenbricks.co.uk</span></span>
+</footer>
+</main>
+
+<script>
+(function(){
+const NS="http://www.w3.org/2000/svg";
+const $=s=>document.querySelector(s);
+const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const fmt=v=>v>=1e6?"$"+(v/1e6).toFixed(v>=1e7?0:1)+"M":v>=1e3?"$"+Math.round(v/1e3)+"k":"$"+Math.round(v);
+
+/* ---------- 1. Productivity vs pay (EPI, Q4 values) ---------- */
+const PP=[[1948,100,100],[1955,131.8,132.3],[1960,144.9,146.5],[1965,178.5,164.8],[1970,193.9,178.9],[1975,214.7,186.6],[1979,216.8,190.7],[1985,232.3,187.2],[1990,237.7,183.8],[1995,256.8,187.8],[2000,280.7,200.0],[2005,316.7,209.0],[2010,344.7,224.8],[2015,353.6,229.9],[2020,389.9,248.0],[2025,416.7,254.7],[2026.5,419.9,253.0]];
+function lineChart(host,{data,series,xmin,xmax,ymin,ymax,yticks,xticks,yfmt,h=340,w=1000,fillBetween,marker,tipRows}){
+  const W=w,H=h,m={l:52,r:w<700?58:96,t:16,b:30};
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img"},host);
+  const X=x=>m.l+(x-xmin)/(xmax-xmin)*(W-m.l-m.r), Y=y=>H-m.b-(y-ymin)/(ymax-ymin)*(H-m.t-m.b);
+  yticks.forEach(t=>{el("line",{x1:m.l,x2:W-m.r,y1:Y(t),y2:Y(t),class:"gridl"},svg);const tx=el("text",{x:m.l-8,y:Y(t)+4,"text-anchor":"end"},svg);tx.textContent=yfmt(t)});
+  xticks.forEach(t=>{const tx=el("text",{x:X(t),y:H-8,"text-anchor":"middle"},svg);tx.textContent=t});
+  el("line",{x1:m.l,x2:W-m.r,y1:H-m.b,y2:H-m.b,class:"axis"},svg);
+  if(fillBetween){const [a,b]=fillBetween;let d=data.map((r,i)=>(i?"L":"M")+X(r[0])+","+Y(r[a])).join("");d+=data.slice().reverse().map(r=>"L"+X(r[0])+","+Y(r[b])).join("")+"Z";el("path",{d,fill:"var(--gapfill)",stroke:"none"},svg)}
+  series.forEach(s=>{const d=data.map((r,i)=>(i?"L":"M")+X(r[0])+","+Y(r[s.i])).join("");el("path",{d,fill:"none",stroke:s.c,"stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"},svg);
+    const last=data[data.length-1];el("circle",{cx:X(last[0]),cy:Y(last[s.i]),r:4,fill:s.c,stroke:"var(--bg)","stroke-width":2},svg);
+    const t=el("text",{x:X(last[0])+10,y:Y(last[s.i])+4,class:"lbl"},svg);t.textContent=s.lab(last[s.i])});
+  if(marker){el("line",{x1:X(marker.x),x2:X(marker.x),y1:m.t,y2:H-m.b,stroke:"var(--faint)","stroke-dasharray":"3 4"},svg);const t=el("text",{x:X(marker.x)+6,y:m.t+12},svg);t.textContent=marker.text}
+  // hover
+  const tip=document.createElement("div");tip.className="tip";host.appendChild(tip);
+  const cross=el("line",{y1:m.t,y2:H-m.b,stroke:"var(--faint)",opacity:0},svg);
+  const hit=el("rect",{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:"transparent"},svg);
+  const move=e=>{const r=svg.getBoundingClientRect();const sx=(e.clientX-r.left)/r.width*W;const xv=xmin+(sx-m.l)/(W-m.l-m.r)*(xmax-xmin);
+    let best=data[0];data.forEach(d=>{if(Math.abs(d[0]-xv)<Math.abs(best[0]-xv))best=d});
+    cross.setAttribute("x1",X(best[0]));cross.setAttribute("x2",X(best[0]));cross.setAttribute("opacity",1);
+    tip.innerHTML=tipRows(best);tip.style.opacity=1;const px=X(best[0])/W*r.width;tip.style.left=Math.max(0,Math.min(px+14,r.width-190))+"px";tip.style.top="8px"};
+  hit.addEventListener("pointermove",move);hit.addEventListener("pointerleave",()=>{tip.style.opacity=0;cross.setAttribute("opacity",0)});
+  return {svg,X,Y};
+}
+lineChart($("#pp"),{data:PP,series:[{i:1,c:"var(--value)",lab:v=>v.toFixed(0)},{i:2,c:"var(--pay)",lab:v=>v.toFixed(0)}],xmin:1948,xmax:2026.5,ymin:50,ymax:450,
+  yticks:[100,200,300,400],xticks:[1950,1960,1970,1980,1990,2000,2010,2020],yfmt:v=>v,fillBetween:[1,2],marker:{x:1979,text:"1979: the lines part"},
+  tipRows:d=>`<div class="eyebrow" style="margin-bottom:4px">${d[0]===2026.5?"2026 Q2":d[0]+(d[0]===1948?" Q1":" Q4")}</div><div class="row"><span class="v">Productivity</span><b>${d[1].toFixed(1)}</b></div><div class="row"><span class="p">Pay</span><b>${d[2].toFixed(1)}</b></div><div class="row"><span>Gap</span><b>${(d[1]-d[2]).toFixed(1)} pts</b></div>`});
+
+/* ---------- 2. Labour share (BLS selected quarters) ---------- */
+const LS=[[1947,65.5],[1960.75,66.2],[2000,63.8],[2010,56.2],[2020.25,58.9],[2023,54.6],[2025,55.3],[2026,53.6],[2026.25,52.8]];
+lineChart($("#ls"),{data:LS.map(r=>[r[0],r[1]]),series:[{i:1,c:"var(--pay)",lab:v=>v+"%"}],xmin:1947,xmax:2026.25,ymin:50,ymax:68,h:300,w:520,
+  yticks:[52,56,60,64,68],xticks:[1950,1975,2000,2025],yfmt:v=>v+"%",
+  tipRows:d=>`<div class="row"><span>${Math.floor(d[0])} Q${Math.round((d[0]%1)*4)+1}</span><b>${d[1]}%</b></div>`});
+$("#ls").insertAdjacentHTML("beforeend",'<p class="caption" style="margin-top:6px">Selected quarters published by BLS; lines join them.</p>');
+
+/* ---------- 3. Waffle ---------- */
+const wf=$("#waffle");for(let i=0;i<100;i++){const c=document.createElement("i");if(i<2)c.className="on";if(i===2){c.style.background="linear-gradient(90deg,var(--value) 20%,var(--grid) 20%)"}wf.appendChild(c)}
+
+/* ---------- 4. Bars ---------- */
+function bars(host,rows,max,col){rows.forEach(([k,v,lab])=>{host.insertAdjacentHTML("beforeend",`<div class="bar"><span>${k}</span><span class="track"><span class="fill" style="width:${v/max*100}%;background:${col}"></span></span><span class="val">${lab}</span></div>`)})}
+bars($("#switch"),[["Switchers, Aug 2022",8.4,"8.4%"],["Switchers, Sep 2026",4.7,"4.7%"],["Stayers, Sep 2026",3.4,"3.4%"]],9,"var(--pay)");
+bars($("#conc"),[["Top 14.6% ($100k+)",48.25,"48.3%"],["Top 3.6% ($200k+)",24.04,"24.0%"],["Top 0.13% ($1M+)",5.27,"5.3%"],["Top 0.01% ($5M+)",1.76,"1.8%"]],50,"var(--value)");
+$("#conc").insertAdjacentHTML("afterbegin",'<span class="note">Share of all US wages earned by each group</span>');
+
+/* ---------- 5. The band instrument ---------- */
+// pay anchors: SSA 2022 percentile thresholds (log-interpolated): 50th $40.8k, 90th $122.5k, 99th $375.7k, 99.9th $1.22M, 99.99th $4.86M
+// ceiling/floor ratios: mid-career ratios from the v1 model
+const TIERS=[
+ {k:"Median",anchor:40831,v:1.667,a:0.667},
+ {k:"Top 10%",anchor:122502,v:1.80,a:0.70},
+ {k:"Top 1%",anchor:375716,v:1.70,a:0.57},
+ {k:"Top 0.1%",anchor:1219539,v:1.79,a:0.54},
+ {k:"Top 0.01%",anchor:4859651,v:2.55,a:0.70}];
+let tier=2, strat=null;
+const tb=$("#tiers");TIERS.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.textContent=t.k;b.setAttribute("aria-pressed",i===tier);b.onclick=()=>{tier=i;[...tb.children].forEach((c,j)=>c.setAttribute("aria-pressed",j===i));draw()};tb.appendChild(b)});
+document.querySelectorAll(".strat").forEach(b=>b.onclick=()=>{strat=strat===b.dataset.s?null:b.dataset.s;document.querySelectorAll(".strat").forEach(x=>x.setAttribute("aria-pressed",x.dataset.s===strat));draw()});
+$("#capture").oninput=draw;
+
+// career shape: pay relative to mid-career (year 20) anchor; rises fast, plateaus, eases late
+const S20=0.48+0.52*(1-Math.exp(-20/9));
+const shape=t=>(0.48+0.52*(1-Math.exp(-t/9)))/S20-(t>32?0.012*(t-32):0);
+// ceiling grows faster than pay over a career (experience compounds value); floor slower
+function series(){
+  const T=TIERS[tier];let capAdj=+$("#capture").value/100;
+  const out=[];
+  for(let t=0;t<=40;t+=0.5){
+    const base=T.anchor*shape(t);
+    const prog=t/20;
+    let val=base*(1+(T.v-1)*Math.min(1.25,0.55+0.45*prog));
+    let alt=base*(1-(1-T.a)*Math.min(1.2,0.6+0.4*prog));
+    let pay=base;
+    if(strat==="floor"){const lift=alt*0.25;alt+=lift;pay+=lift*0.7}
+    if(strat==="ceiling"){val*=1.3}
+    if(strat==="capture"){pay=pay+(val-pay)*0.3}
+    pay=pay+(capAdj>=0?(val-pay)*capAdj:(pay-alt)*capAdj);
+    pay=Math.min(Math.max(pay,alt*1.001),val*0.999);
+    out.push([t,val,pay,alt]);
+  }
+  return out;
+}
+const bandHost=$("#band");
+const W=1000,H=420,m={l:62,r:90,t:14,b:34};
+const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Career band chart"},bandHost);
+const g={grid:el("g",{},svg),gap:el("path",{fill:"var(--gapfill)"},svg),floor:el("path",{fill:"var(--floorfill)"},svg),
+  val:el("path",{fill:"none",stroke:"var(--value)","stroke-width":2},svg),alt:el("path",{fill:"none",stroke:"var(--alt)","stroke-width":2,"stroke-dasharray":"6 5"},svg),
+  pay:el("path",{fill:"none",stroke:"var(--pay)","stroke-width":3.5,"stroke-linecap":"round"},svg),labels:el("g",{},svg)};
+el("line",{x1:m.l,x2:W-m.r,y1:H-m.b,y2:H-m.b,class:"axis"},svg);
+[0,10,20,30,40].forEach(t=>{const tx=el("text",{x:m.l+t/40*(W-m.l-m.r),y:H-10,"text-anchor":"middle"},svg);tx.textContent=t===0?"Year 0":t});
+const cross=el("line",{y1:m.t,y2:H-m.b,stroke:"var(--faint)",opacity:0},svg);
+const dots=["var(--value)","var(--pay)","var(--alt)"].map(c=>el("circle",{r:5,fill:c,stroke:"var(--surface)","stroke-width":2,opacity:0},svg));
+const hit=el("rect",{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:"transparent"},svg);
+const btip=document.createElement("div");btip.className="tip";bandHost.appendChild(btip);
+let cur=[],X,Y;
+function draw(){
+  cur=series();
+  const lo=Math.min(...cur.map(r=>r[3]))*0.85, hi=Math.max(...cur.map(r=>r[1]))*1.1;
+  const L0=Math.log(lo),L1=Math.log(hi);
+  X=t=>m.l+t/40*(W-m.l-m.r); Y=v=>H-m.b-(Math.log(v)-L0)/(L1-L0)*(H-m.t-m.b);
+  g.grid.innerHTML="";
+  const cands=[1e4,2e4,5e4,1e5,2e5,5e5,1e6,2e6,5e6,1e7,2e7,5e7];
+  cands.filter(v=>v>=lo&&v<=hi).forEach(v=>{el("line",{x1:m.l,x2:W-m.r,y1:Y(v),y2:Y(v),class:"gridl"},g.grid);const t=el("text",{x:m.l-8,y:Y(v)+4,"text-anchor":"end"},g.grid);t.textContent=fmt(v)});
+  const P=i=>cur.map((r,j)=>(j?"L":"M")+X(r[0]).toFixed(1)+","+Y(r[i]).toFixed(1)).join("");
+  const R=i=>cur.slice().reverse().map(r=>"L"+X(r[0]).toFixed(1)+","+Y(r[i]).toFixed(1)).join("");
+  g.gap.setAttribute("d",P(1)+R(2)+"Z");g.floor.setAttribute("d",P(2)+R(3)+"Z");
+  g.val.setAttribute("d",P(1));g.pay.setAttribute("d",P(2));g.alt.setAttribute("d",P(3));
+  g.labels.innerHTML="";const last=cur[cur.length-1];
+  const ys=[[Y(last[1]),"Value"],[Y(last[2]),"Pay"],[Y(last[3]),"Floor"]];
+  for(let i=1;i<3;i++)if(ys[i][0]-ys[i-1][0]<16)ys[i][0]=ys[i-1][0]+16;
+  ys.forEach(([y,n],i)=>{const t=el("text",{x:W-m.r+10,y:y+4,class:"lbl"},g.labels);t.textContent=n+" "+fmt(last[i+1])});
+  const mid=cur.find(r=>r[0]===20);
+  el("text",{x:X(20)+8,y:(Y(mid[1])+Y(mid[2]))/2+4,class:"lbl",style:"fill:var(--value)"},g.labels).textContent="uncaptured value";
+  el("text",{x:X(28)+8,y:(Y(cur.find(r=>r[0]===28)[2])+Y(cur.find(r=>r[0]===28)[3]))/2+4,class:"lbl",style:"fill:var(--pay)"},g.labels).textContent="retention margin";
+  readout(mid);
+}
+function readout(r){
+  const [t,v,p,a]=r;const cap=(p-a)/(v-a);
+  $("#readout").innerHTML=[["Year "+t+" value created",fmt(v),"v"],["Actual pay",fmt(p),"p"],["Market alternative",fmt(a),"a"],["Uncaptured value",fmt(v-p),""],["Share of surplus captured",(cap*100).toFixed(0)+"%",""]]
+   .map(([k,n,c])=>`<div><span class="k">${k}</span><span class="n ${c}">${n}</span></div>`).join("");
+}
+hit.addEventListener("pointermove",e=>{const r=svg.getBoundingClientRect();const sx=(e.clientX-r.left)/r.width*W;let t=Math.round(((sx-m.l)/(W-m.l-m.r)*40)*2)/2;t=Math.max(0,Math.min(40,t));
+  const row=cur.find(d=>d[0]===t);cross.setAttribute("x1",X(t));cross.setAttribute("x2",X(t));cross.setAttribute("opacity",1);
+  [1,2,3].forEach((i,j)=>{dots[j].setAttribute("cx",X(t));dots[j].setAttribute("cy",Y(row[i]));dots[j].setAttribute("opacity",1)});
+  readout([Math.round(t),row[1],row[2],row[3]]);
+  btip.innerHTML=`<div class="eyebrow" style="margin-bottom:4px">Career year ${t}</div><div class="row"><span class="v">Value</span><b>${fmt(row[1])}</b></div><div class="row"><span class="p">Pay</span><b>${fmt(row[2])}</b></div><div class="row"><span class="a">Floor</span><b>${fmt(row[3])}</b></div>`;
+  btip.style.opacity=1;const px=X(t)/W*r.width;btip.style.left=(px>r.width*0.6?px-190:px+14)+"px";btip.style.top="10px"});
+hit.addEventListener("pointerleave",()=>{btip.style.opacity=0;cross.setAttribute("opacity",0);dots.forEach(d=>d.setAttribute("opacity",0));readout(cur.find(r=>r[0]===20))});
+draw();
+
+/* ---------- 6. Calculator ---------- */
+function calc(){
+  const p=+$("#cPay").value||0,a=+$("#cAlt").value||0,v=+$("#cVal").value||0;
+  const out=$("#calcout"),vd=$("#verdict");
+  if(!(v>a)){out.innerHTML="";vd.textContent="Enter a value created that is higher than your best alternative, so there is a band to sit in.";return}
+  const lo=Math.min(a,p)*0.9,hi=Math.max(v,p)*1.05,pos=x=>((x-lo)/(hi-lo)*100)+"%";
+  $("#mA").style.left=pos(a);$("#mP").style.left=pos(p);$("#mV").style.left=pos(v);
+  const cap=(p-a)/(v-a);
+  out.innerHTML=[["Uncaptured value",fmt(Math.max(0,v-p)),"v"],["Retention margin",fmt(p-a),"p"],["Share of surplus captured",(cap*100).toFixed(0)+"%",""],["Pay as % of value",(p/v*100).toFixed(0)+"%",""]]
+    .map(([k,n,c])=>`<div><span class="k">${k}</span><span class="n ${c}">${n}</span></div>`).join("");
+  vd.textContent= p<a?"You are paid below your best alternative. Strategy I is the obvious move: test the market and price your floor.":
+    p>v?"You are paid more than the value you estimate you create. Either your estimate is low, or this is a position to protect.":
+    cap<0.25?"You capture under a quarter of the surplus you create. Strategy III comes first: quantify your output and renegotiate from the numbers.":
+    cap<0.6?"You sit mid-band. The biggest lever is usually attribution: make the value you create visible and tied to your pay.":
+    "You capture most of the surplus. Further gains come from raising the ceiling (Strategy II) or moving to equity and profit share.";
+}
+["cPay","cAlt","cVal"].forEach(id=>$("#"+id).addEventListener("input",calc));
+$("#calcf").addEventListener("submit",e=>e.preventDefault());
+calc();
+})();
+</script>

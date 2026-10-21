@@ -1,0 +1,28 @@
+{
+  "productivity_pay_index": {
+    "source": "Economic Policy Institute, The Productivity-Pay Gap (https://www.epi.org/productivity-pay-gap/). Index 1948Q1 = 100. Q4 values except 1948 (Q1) and 2026 (Q2).",
+    "columns": ["year", "net_productivity", "typical_worker_hourly_comp"],
+    "rows": [[1948,100.0,100.0],[1955,131.8,132.3],[1960,144.9,146.5],[1965,178.5,164.8],[1970,193.9,178.9],[1975,214.7,186.6],[1979,216.8,190.7],[1985,232.3,187.2],[1990,237.7,183.8],[1995,256.8,187.8],[2000,280.7,200.0],[2005,316.7,209.0],[2010,344.7,224.8],[2015,353.6,229.9],[2020,389.9,248.0],[2025,416.7,254.7],[2026.5,419.9,253.0]]
+  },
+  "labour_share": {
+    "source": "BLS, The Economics Daily: Labor share at its lowest level, 52.8 percent in second quarter 2026. Nonfarm business sector.",
+    "columns": ["period", "percent"],
+    "rows": [["1947Q1",65.5],["1960Q4",66.2],["2000Q1",63.8],["2010Q1",56.2],["2020Q2",58.9],["2023Q1",54.6],["2025Q1",55.3],["2026Q1",53.6],["2026Q2",52.8]]
+  },
+  "innovator_capture": {
+    "source": "Nordhaus (2004), NBER Working Paper 10433, via NBER Digest 'Who Gains from Innovation?'",
+    "share_of_social_surplus_captured_pct": 2.2
+  },
+  "wage_growth_tracker": {
+    "source": "Federal Reserve Bank of Atlanta Wage Growth Tracker, 3-month moving average of median wage growth. 2022 peak via YCharts.",
+    "job_switchers_sep_2026_pct": 4.7,
+    "job_stayers_sep_2026_pct": 3.4,
+    "job_switchers_peak_aug_2022_pct": 8.4
+  },
+  "ssa_wage_percentiles_2022": {
+    "source": "SSA Wage Statistics for 2022 (https://ssa.gov/cgi-bin/netcomp.cgi?year=2022). Percentiles log-interpolated within brackets; 172.0M wage earners.",
+    "p50": 40831, "p90": 122502, "p99": 375716, "p99_9": 1219539, "p99_99": 4859651,
+    "share_of_all_wages_pct": {"100k_plus": 48.25, "200k_plus": 24.04, "1m_plus": 5.27, "5m_plus": 1.76},
+    "workers_over_50m": 227
+  }
+}

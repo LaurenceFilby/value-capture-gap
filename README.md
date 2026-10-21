@@ -1,121 +1,76 @@
-### 👉 [View the live chart](https://laurencefilby.github.io/value-capture-gap/value_capture_percentiles_final.html)
+### 👉 [Open the interactive framework](https://laurencefilby.github.io/value-capture-gap/)
 
-# The Value Capture Gap Framework
+# The Value Capture Gap
 
-An empirical framework for analyzing compensation efficiency across income distributions.
+A framework for the gap between the **value people create** and the **pay they capture**, anchored in US data.
 
-## Overview
+## The core idea
 
-This framework examines a persistent economic phenomenon: the measurable gap between **value created** and **value captured** in labor markets. Drawing on behavioral economics, labor theory, and empirical income data, it provides a systematic model for understanding compensation dynamics and identifying optimization strategies.
+At any point in a career, pay sits inside a band:
 
-## The Core Insight
+- **Ceiling**: the marginal value you produce for the organisation
+- **Floor**: your best realistic alternative (reservation wage)
 
-At any point in a career, compensation operates within a bounded range:
-- **Upper bound**: Marginal value produced for the organization
-- **Lower bound**: Best alternative employment opportunity (reservation wage)
+Where pay settles between the two depends on:
 
-Position within this range reflects:
-1. Information efficiency (visibility of individual contribution)
-2. Market structure (competitive dynamics, switching costs)
-3. Attribution complexity (difficulty measuring long-horizon value creation)
-4. Behavioral factors (anchoring effects, status quo bias, negotiation dynamics)
+1. How visible your contribution is
+2. Market structure and switching costs
+3. How hard your value is to attribute
+4. Negotiation and behavioural factors (anchoring, status quo bias)
 
-## The Visualization
+Above your pay sits **uncaptured value**, which the firm keeps. Below it sits your **retention margin**, the premium that stops you leaving.
 
-**Interactive analysis of US income distribution:**
-- Median (50th percentile)
-- Top 10%
-- Top 1%
-- Top 0.1%
-- Top 0.01%
+## What the page shows
 
-**Each trajectory displays:**
-- **Solid line**: Realized compensation
-- **Upper boundary**: Estimated value contribution
-- **Lower boundary**: Market alternative (reservation wage)
-- **Upper band**: Unrealized value capture potential
-- **Lower band**: Retention margin (compensation premium above alternatives)
+**Real data**
 
-## Key Observations
+| Evidence | Figure | Source |
+|---|---|---|
+| Productivity vs typical worker pay | Productivity +93.7%, pay +32.7% (1979 to 2026 Q2) | EPI |
+| Labour share of business output | 65.5% (1947) to 52.8% (Q2 2026), a record low | BLS |
+| Innovators' share of the value they create | About 2.2% | Nordhaus, NBER |
+| Job switchers vs stayers, wage growth | 4.7% vs 3.4% (Sep 2026); switchers peaked at 8.4% (Aug 2022) | Atlanta Fed |
+| Concentration of pay | Workers on $1M+ (0.13%) earned 5.3% of all US wages in 2022 | SSA |
 
-1. **Universal phenomenon** - Value capture gaps persist across all income levels
-2. **Non-linear scaling** - Gap magnitude increases disproportionately at higher percentiles
-3. **Temporal dynamics** - Value creation and compensation follow distinct trajectory patterns
-4. **Systematic interventions** - Three distinct strategy classes for optimizing outcomes
+**Interactive model**
 
-## Optimization Strategies
+- A career band for five earnings tiers (median to top 0.01%), each anchored to its real 2022 wage percentile
+- Three strategy toggles that move the band live
+- A personal calculator: enter your pay, best alternative and value created to see your capture share
 
-### Strategy I: Expand the Opportunity Set (raise lower bound)
-- Human capital investment → enhances alternative employment options
-- Sector transition → accesses higher-value labor markets
-- Direct value capture → entrepreneurship reduces intermediation
-- Credible signaling → reduces information asymmetry about alternatives
+The career band is an illustrative model, not a measurement. Its ceiling and floor ratios are framework assumptions.
 
-### Strategy II: Increase Marginal Productivity (raise upper bound)
-- Innovation and process improvement
-- Strategic contribution and decision rights
-- **Critical constraint**: Effectiveness depends on attribution mechanisms
-- Gap expansion risk: Value creation without corresponding capture infrastructure
+## The three strategies
 
-### Strategy III: Improve Capture Efficiency (optimize position within range)
-- Quantification systems → solve measurement and attribution problems
-- Strategic negotiation → address power asymmetries
-- Structural alignment → equity participation, performance linkage, profit-sharing
-- Transparency initiatives → reduce information gaps
+**I. Raise the floor** (expand the opportunity set): skills the market prices, higher-value sectors, credible outside options.
 
-## Theoretical Foundation
+**II. Raise the ceiling** (create more value): innovation, scope, decision rights. The catch: without attribution, the firm keeps the extra and the gap widens.
 
-This framework synthesizes:
-- **Classical labor economics**: Reservation wage theory, competitive equilibrium
-- **Marginal productivity theory**: Value attribution and compensation justification
-- **Behavioral economics**: Bounded rationality, information asymmetry, cognitive biases
+**III. Move within the band** (capture more): quantify output, negotiate from data, equity and profit share.
 
-The result is an actionable decision framework with empirically testable intervention points.
+## Repository
 
-## Methodology
+| Path | What it is |
+|---|---|
+| `index.html` | The interactive page (served by GitHub Pages) |
+| `model/value_capture_model.py` | Python version of the career band model; exports `data/band_model.csv` |
+| `data/evidence.json` | All real data points used, with sources |
+| `archive/value_capture_percentiles_final.html` | The original v1 Plotly chart |
 
-Built using Python/Plotly with data modeled from:
-- US Census Bureau income statistics
-- Bureau of Labor Statistics compensation surveys
-- Academic literature on income distribution and productivity
+Run the model:
 
-Interactive visualization enables exploration of:
-- Career trajectory patterns by percentile
-- Dynamic relationships between value creation and capture
-- Comparative analysis across income levels
-
-## Usage
-
-Access via browser to explore the interactive model:
-- Hover for precise values at any career point
-- Toggle percentile visibility via legend
-- Zoom/pan to examine specific ranges or time periods
-
-## Applications
-
-**For individuals**: Systematic framework for career optimization and negotiation strategy
-
-**For organizations**: Diagnostic tool for compensation structure analysis and retention risk assessment
-
-**For researchers**: Empirical foundation for studying labor market efficiency and compensation dynamics
-
-**For policymakers**: Evidence base for understanding income inequality mechanisms and intervention design
+```bash
+python model/value_capture_model.py          # writes data/band_model.csv
+python model/value_capture_model.py --plot   # plus a matplotlib chart
+```
 
 ## Author
 
-**Laurence Filby**  
-Quantitative Strategies | Behavioral Economics | Post-Quantum Systems
+**Laurence Filby**
+Quantitative Strategies | Behavioural Economics | Post-Quantum Systems
 
-## License
+## Licence
 
-© 2025 Laurence Filby. All rights reserved.
+© 2025–2026 Laurence Filby. All rights reserved. Academic citation permitted with attribution. Commercial use or reproduction requires written permission.
 
-This framework and visualization constitute proprietary intellectual property. Academic citation permitted with attribution. Commercial use or reproduction requires written permission.
-
-## Contact
-
-Research collaboration and licensing inquiries: laurence@sevenbricks.co.uk
-
----
-
-*"Compensation outcomes reflect the interaction of value creation, information efficiency, and strategic positioning."*
+Research collaboration and licensing: laurence@sevenbricks.co.uk
