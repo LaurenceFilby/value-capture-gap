@@ -1,3 +1,5 @@
+### 👉 [View the live chart](https://laurencefilby.github.io/value-capture-gap/value_capture_percentiles_final.html)
+
 # The Value Capture Gap Framework
 
 An empirical framework for analyzing compensation efficiency across income distributions.
